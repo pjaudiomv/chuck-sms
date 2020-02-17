@@ -19,11 +19,11 @@ $contact = $_REQUEST['From'];
 // $chuck = json_decode(file_get_contents("https://api.icndb.com/jokes/random"), true);
 // $chuck_joke = html_entity_decode($chuck['value']['joke']);
 $chuck = json_decode(file_get_contents("https://api.chucknorris.io/jokes/random"), true);
-$chuck_joke = html_entity_decode($chuck['value']);
+$chuck_joke = $chuck['value'];
 
 if (isset($_REQUEST["SmsSid"])) {
     if (trim(strtoupper($body)) == strtoupper($keyword)) {
-        $message = $chuck_joke;
+        $message = html_entity_decode($chuck_joke);
 
     } else {
         $message = "You must send a message with just the word \"$keyword\" in it.";
