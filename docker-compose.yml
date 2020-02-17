@@ -1,0 +1,12 @@
+version: '3.1'
+
+services:
+  sub:
+    build: .
+    restart: always
+    ports:
+      - 3400:80
+    volumes:
+      - .:/var/www/html/
+    environment:
+      ENVIRONMENT: dev
