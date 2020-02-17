@@ -15,18 +15,30 @@ $keyword = "chuck";
 $body = $_REQUEST['Body'];
 $contact = $_REQUEST['From'];
 
-if (trim(strtoupper($body)) == strtoupper($keyword)) {
-    // Alternate random chuck norris quote api
-    // $chuck = json_decode(file_get_contents("https://api.icndb.com/jokes/random"), true);
-    // $message = $chuck['value']['joke'];
+// Alternate random chuck norris quote api
+// $chuck = json_decode(file_get_contents("https://api.icndb.com/jokes/random"), true);
+// $chuck_joke = html_entity_decode($chuck['value']['joke']);
+$chuck = json_decode(file_get_contents("https://api.chucknorris.io/jokes/random"), true);
+$chuck_joke = html_entity_decode($chuck['value']);
 
-    $chuck = json_decode(file_get_contents("https://api.chucknorris.io/jokes/random"), true);
-    $message = $chuck['value'];
+if (isset($_REQUEST["SmsSid"])) {
+    if (trim(strtoupper($body)) == strtoupper($keyword)) {
+        $message = $chuck_joke;
 
-} else {
-    $message = "You must send a message with just the word \"$keyword\" in it.";
+    } else {
+        $message = "You must send a message with just the word \"$keyword\" in it.";
+    }
+
+    if (isset($_REQUEST['From']) && isset($_REQUEST['To'])) {
+        $GLOBALS['twilioClient']->messages->create($_REQUEST['From'], array("from" => $_REQUEST['To'], "body" => $message));
+    }
 }
 
-if (isset($_REQUEST['From']) && isset($_REQUEST['To'])) {
-    $GLOBALS['twilioClient']->messages->create($_REQUEST['From'], array("from" => $_REQUEST['To'], "body" => $message));
-}
+if (!isset($_REQUEST["SmsSid"])) {
+    header("content-type: text/xml");
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"; ?>
+    <Response>
+        <Pause length="2"/>
+        <Say voice="Polly.Kimberly"><?php echo $chuck_joke;?></Say>
+    </Response>
+<?php }

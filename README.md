@@ -1,6 +1,6 @@
 # Chuck SMS
 
-Sends random chuck norris quote text message when sending an txt with the word chuck in it to a twilio number.
+Sends random chuck norris quote text message when sending an txt with the word chuck in it to a twilio number. Will read it over voice as well.
 
 ### Installation
 
@@ -10,5 +10,5 @@ Sends random chuck norris quote text message when sending an txt with the word c
 4) Add the twilio account sid and auth token info to `index.php`.
 5) Upload everything to a server for hosting.
 6) Provision a new phone number.
-7) Point the webhook to your https://your-web-server/chuck.php.  HTTP POST should be the method used.
+7) Point the voice and sms webhook to your https://your-web-server/chuck.php.  HTTP POST should be the method used.
 8) `$keyword` is the trigger word that sends quote.
